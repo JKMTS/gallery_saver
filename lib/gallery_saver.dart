@@ -98,7 +98,7 @@ class GallerySaver {
     final tempDir = await getTemporaryDirectory();
     File file = fileName == null
         ? new File('${tempDir.path}/${getRandomString(5)}.jpg')
-        : new File('${tempDir.path}/$fileName');
+        : await File('${tempDir.path}/$fileName').create();
     await file.writeAsBytes(bytes);
     print('File size:${await file.length()}');
     print(file.path);
