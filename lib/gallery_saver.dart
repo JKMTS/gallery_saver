@@ -92,7 +92,7 @@ class GallerySaver {
     }
     var bytes = req.bodyBytes;
     final tempDir = await getTemporaryDirectory();
-    File file = new File('${tempDir.path}/$fileName');
+    File file = new File('${tempDir.path}/$fileName.jpg');
     debugPrint("file path ^^^^^ ${file.path}");
     await file.writeAsBytes(bytes);
     print('File size:${await file.length()}');
