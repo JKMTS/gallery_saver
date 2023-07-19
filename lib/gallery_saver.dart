@@ -68,7 +68,7 @@ class GallerySaver {
       debugPrint("already exist ========= $alreadyExist");
       tempFile = alreadyExist
           ? alreadyDownloadFile
-          : await _downloadFile(path, headers: headers);
+          : await _downloadFile(path, headers: headers, fileName: fileName);
       bool fileExists = await tempFile.exists();
       debugPrint("file exist============= $fileExists");
       path = tempFile.path;
