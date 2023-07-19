@@ -63,7 +63,7 @@ class GallerySaver {
     debugPrint("is local file ========= ${isLocalFilePath(path)}");
     if (!isLocalFilePath(path)) {
       final tempDir = await getTemporaryDirectory();
-      File alreadyDownloadFile = File("${tempDir.path}/$fileName.jpg");
+      File alreadyDownloadFile = File("${tempDir.path}/$fileName");
       bool alreadyExist = await alreadyDownloadFile.exists();
       debugPrint("already exist ========= $alreadyExist");
       tempFile = alreadyExist
