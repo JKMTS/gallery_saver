@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gallery_saver/files.dart';
 import 'package:http/http.dart' as http;
@@ -60,8 +61,11 @@ class GallerySaver {
     if (!isImage(path)) {
       throw ArgumentError(fileIsNotImage);
     }
+    debugPrint("is local file ========= ${isLocalFilePath(path)}");
     if (!isLocalFilePath(path)) {
       tempFile = await _downloadFile(path, headers: headers);
+      bool fileExists = await tempFile.exists();
+      debugPrint("file exist============= $fileExists");
       path = tempFile.path;
     }
 
