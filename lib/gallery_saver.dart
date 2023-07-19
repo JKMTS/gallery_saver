@@ -66,11 +66,8 @@ class GallerySaver {
       File alreadyDownloadFile = File("${tempDir.path}/$fileName");
       debugPrint(
           "already downloaded file path ======== ${alreadyDownloadFile.path}");
-      bool alreadyExist = alreadyDownloadFile.isAbsolute;
-      debugPrint("already exist ========= $alreadyExist");
-      tempFile = alreadyExist
-          ? alreadyDownloadFile
-          : await _downloadFile(path, headers: headers, fileName: fileName);
+      tempFile =
+          await _downloadFile(path, headers: headers, fileName: fileName);
       bool fileExists = await tempFile.exists();
       debugPrint("file exist============= $fileExists");
       path = tempFile.path;
