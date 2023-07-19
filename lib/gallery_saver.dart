@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/services.dart';
 import 'package:gallery_saver/files.dart';
@@ -85,11 +86,18 @@ class GallerySaver {
       throw HttpException(req.statusCode.toString());
     }
     var bytes = req.bodyBytes;
-    String dir = (await getTemporaryDirectory()).path;
-    File file = new File('$dir/${basename(url)}');
+    final tempDir = await getTemporaryDirectory();
+    File file = new File('${tempDir.path}/${getRandomString(5)}.jpg');
     await file.writeAsBytes(bytes);
     print('File size:${await file.length()}');
     print(file.path);
     return file;
   }
 }
+
+Random _rnd = Random();
+
+String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+    length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+
+const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
