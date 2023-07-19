@@ -99,6 +99,7 @@ class GallerySaver {
     File file = fileName == null
         ? new File('${tempDir.path}/${getRandomString(5)}.jpg')
         : await File('${tempDir.path}/$fileName').create();
+    debugPrint("file path ^^^^^ ${file.path}");
     await file.writeAsBytes(bytes);
     print('File size:${await file.length()}');
     print(file.path);
