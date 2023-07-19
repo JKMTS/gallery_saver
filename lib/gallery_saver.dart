@@ -48,12 +48,11 @@ class GallerySaver {
   }
 
   ///saves image from provided temp path and optional album name in gallery
-  static Future<bool?> saveImage(
-    String path, {
-    String? albumName,
-    bool toDcim = false,
-    Map<String, String>? headers,
-  }) async {
+  static Future<bool?> saveImage(String path,
+      {String? albumName,
+      bool toDcim = false,
+      Map<String, String>? headers,
+      String? fileName}) async {
     File? tempFile;
     if (path.isEmpty) {
       throw ArgumentError(pleaseProvidePath);
@@ -63,7 +62,13 @@ class GallerySaver {
     }
     debugPrint("is local file ========= ${isLocalFilePath(path)}");
     if (!isLocalFilePath(path)) {
-      tempFile = await _downloadFile(path, headers: headers);
+      final tempDir = await getTemporaryDirectory();
+      File alreadyDownloadFile = File("${tempDir.path}/$fileName");
+      bool alreadyExist = await alreadyDownloadFile.exists();
+      debugPrint("already exist ========= $alreadyExist");
+      tempFile = alreadyExist
+          ? alreadyDownloadFile
+          : await _downloadFile(path, headers: headers);
       bool fileExists = await tempFile.exists();
       debugPrint("file exist============= $fileExists");
       path = tempFile.path;
@@ -81,7 +86,7 @@ class GallerySaver {
   }
 
   static Future<File> _downloadFile(String url,
-      {Map<String, String>? headers}) async {
+      {Map<String, String>? headers, String? fileName}) async {
     print(url);
     print(headers);
     http.Client _client = new http.Client();
@@ -91,7 +96,9 @@ class GallerySaver {
     }
     var bytes = req.bodyBytes;
     final tempDir = await getTemporaryDirectory();
-    File file = new File('${tempDir.path}/${getRandomString(5)}.jpg');
+    File file = fileName == null
+        ? new File('${tempDir.path}/${getRandomString(5)}.jpg')
+        : new File('${tempDir.path}/$fileName');
     await file.writeAsBytes(bytes);
     print('File size:${await file.length()}');
     print(file.path);
