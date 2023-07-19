@@ -74,9 +74,9 @@ class GallerySaver {
       <String, dynamic>{'path': path, 'albumName': albumName, 'toDcim': toDcim},
     );
 
-    // if (tempFile != null) {
-    //   tempFile.delete();
-    // }
+    if (tempFile != null) {
+      tempFile.delete();
+    }
 
     return result;
   }
