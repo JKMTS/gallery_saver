@@ -63,11 +63,13 @@ class GallerySaver {
     debugPrint("is local file ========= ${isLocalFilePath(path)}");
     if (!isLocalFilePath(path)) {
       final tempDir = await getTemporaryDirectory();
-      File alreadyDownloadFile = File("${tempDir.path}/$fileName");
-      debugPrint(
-          "already downloaded file path ======== ${alreadyDownloadFile.path}");
-      tempFile =
-          await _downloadFile(path, headers: headers, fileName: fileName);
+      // File alreadyDownloadFile = File("${tempDir.path}/$fileName");
+      // debugPrint(
+      //     "already downloaded file path ======== ${alreadyDownloadFile.path}");
+      tempFile = await _downloadFile(
+        path,
+        headers: headers,
+      );
       bool fileExists = await tempFile.exists();
       debugPrint("file exist============= $fileExists");
       path = tempFile.path;
@@ -85,7 +87,7 @@ class GallerySaver {
   }
 
   static Future<File> _downloadFile(String url,
-      {Map<String, String>? headers, String? fileName}) async {
+      {Map<String, String>? headers}) async {
     print(url);
     print(headers);
     http.Client _client = new http.Client();
@@ -96,9 +98,7 @@ class GallerySaver {
     var bytes = req.bodyBytes;
     debugPrint("bytes ======== $bytes");
     final tempDir = await getTemporaryDirectory();
-    File file = fileName == null
-        ? new File('${tempDir.path}/${getRandomString(5)}.jpg')
-        : new File('${tempDir.path}/$fileName');
+    File file = new File('${tempDir.path}/${getRandomString(5)}.jpg');
     debugPrint("file path ^^^^^ ${file.path}");
     await file.writeAsBytes(bytes);
     print('File size:${await file.length()}');
