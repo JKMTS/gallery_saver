@@ -34,7 +34,7 @@ class GallerySaver {
       throw ArgumentError(fileIsNotVideo);
     }
     if (!isLocalFilePath(path)) {
-      tempFile = await _downloadFile(path, headers: headers);
+      tempFile = await _downloadFile(path, headers: headers, fileName: '');
       path = tempFile.path;
     }
     bool? result = await _channel.invokeMethod(
@@ -64,6 +64,7 @@ class GallerySaver {
       tempFile = await _downloadFile(
         path,
         headers: headers,
+        fileName: fileName ?? "",
       );
       path = tempFile.path;
     }
@@ -72,15 +73,16 @@ class GallerySaver {
       methodSaveImage,
       <String, dynamic>{'path': path, 'albumName': albumName, 'toDcim': toDcim},
     );
-    if (tempFile != null) {
-      tempFile.delete();
-    }
+
+    // if (tempFile != null) {
+    //   tempFile.delete();
+    // }
 
     return result;
   }
 
   static Future<File> _downloadFile(String url,
-      {Map<String, String>? headers}) async {
+      {Map<String, String>? headers, required String fileName}) async {
     print(url);
     print(headers);
     http.Client _client = new http.Client();
@@ -89,9 +91,8 @@ class GallerySaver {
       throw HttpException(req.statusCode.toString());
     }
     var bytes = req.bodyBytes;
-    debugPrint("bytes ======== $bytes");
     final tempDir = await getTemporaryDirectory();
-    File file = new File('${tempDir.path}/MNM-${getRandomString(8)}.jpg');
+    File file = new File('${tempDir.path}/$fileName');
     debugPrint("file path ^^^^^ ${file.path}");
     await file.writeAsBytes(bytes);
     print('File size:${await file.length()}');
