@@ -95,6 +95,7 @@ class GallerySaver {
       throw HttpException(req.statusCode.toString());
     }
     var bytes = req.bodyBytes;
+    debugPrint("bytes ======== $bytes");
     final tempDir = await getTemporaryDirectory();
     File file = fileName == null
         ? new File('${tempDir.path}/${getRandomString(5)}.jpg')
