@@ -60,18 +60,11 @@ class GallerySaver {
     if (!isImage(path)) {
       throw ArgumentError(fileIsNotImage);
     }
-    debugPrint("is local file ========= ${isLocalFilePath(path)}");
     if (!isLocalFilePath(path)) {
-      final tempDir = await getTemporaryDirectory();
-      // File alreadyDownloadFile = File("${tempDir.path}/$fileName");
-      // debugPrint(
-      //     "already downloaded file path ======== ${alreadyDownloadFile.path}");
       tempFile = await _downloadFile(
         path,
         headers: headers,
       );
-      bool fileExists = await tempFile.exists();
-      debugPrint("file exist============= $fileExists");
       path = tempFile.path;
     }
 
