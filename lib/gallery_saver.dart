@@ -98,8 +98,8 @@ class GallerySaver {
     debugPrint("bytes ======== $bytes");
     final tempDir = await getTemporaryDirectory();
     File file = fileName == null
-        ? new File('${tempDir.path}/${getRandomString(5)}-${getRandomString(5)}.jpg')
-        : new File('${tempDir.path}/$fileName.jpg');
+        ? new File('${tempDir.path}/${getRandomString(5)}.jpg')
+        : new File('${tempDir.path}/$fileName');
     debugPrint("file path ^^^^^ ${file.path}");
     await file.writeAsBytes(bytes);
     print('File size:${await file.length()}');
